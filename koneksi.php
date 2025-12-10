@@ -1,22 +1,44 @@
 <?php
 $host = 'localhost';
 $user = 'root';
-$pass = '';  Default XAMPP password
+$pass = '';  // Default XAMPP password
 $db   = 'meyda_collection';
 
-$conn = new mysqli($host, $user, $pass, $db);
+// Create connection with improved error handling
+$conn = new mysqli();
+if (!$conn->real_connect($host, $user, $pass, $db, null, null, MYSQLI_CLIENT_COMPRESS)) {
+    // Try alternative database names if the primary one fails
+    $alt_dbs = ['meyda_project', 'meyda-collection', 'meyda_db'];
+    $connected = false;
+    
+    foreach($alt_dbs as $alt_db) {
+        $conn = new mysqli();
+        if ($conn->real_connect($host, $user, $pass, $alt_db)) {
+            $db = $alt_db;
+            $connected = true;
+            break;
+        }
+    }
+    
+    if (!$connected) {
+        die("Koneksi gagal: " . $conn->connect_error . "<br/>Host: " . $host . "<br/>Database: " . $db . "<br/>User: " . $user);
+    }
+}
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
- Function to sanitize input
+// Set charset to prevent issues
+$conn->set_charset("utf8mb4");
+
+// Function to sanitize input
 function sanitize($data) {
     global $conn;
-    return htmlspecialchars(strip_tags(trim($conn->real_escape_string($data))));
+    return htmlspecialchars(strip_tags(trim(mysqli_real_escape_string($conn, $data))));
 }
 
- Format Rupiah
+// Format Rupiah
 function formatRupiah($angka){
     return "Rp " . number_format($angka,0,',','.');
 }
