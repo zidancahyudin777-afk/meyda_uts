@@ -32,7 +32,23 @@
 ## Troubleshooting Umum
 
 ### Error Koneksi Database
-- Pastikan nama host, username, password, dan nama database benar
+- **Pastikan nama host, username, password, dan nama database benar**
+- **Untuk AlwaysData:**
+  - Host: `mysql-meyda-project.alwaysdata.net`
+  - Username: `meyda-project`
+  - Password: *ambil dari panel AlwaysData Anda*
+  - Database: `meyda-project_db` (atau nama database lain yang terdaftar di panel)
+- **Langkah-langkah perbaikan:**
+  1. Login ke panel AlwaysData Anda: https://admin.alwaysdata.com/
+  2. Klik menu 'Databases'
+  3. Temukan database 'meyda-project' dan catat passwordnya
+  4. Ganti password di file `includes/koneksi.php` (atau `koneksi_hosting_final.php`)
+  5. Jika nama database default tidak bekerja, coba nama-nama berikut:
+     - `meyda-project_meyda_db`
+     - `meyda_db`
+     - `meyda-project_test`
+     - `meyda-project_main`
+     - `meyda-project_data`
 - Hubungi penyedia hosting jika tidak yakin dengan detail koneksi
 
 ### Halaman Tidak Ditemukan (404)
