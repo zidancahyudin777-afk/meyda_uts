@@ -1,4 +1,7 @@
 <?php
+// KONFIGURASI DATABASE UNTUK LOKAL
+// Untuk hosting, gunakan file koneksi_hosting.php
+
 $host = 'localhost';
 $user = 'root';
 $pass = '';  // Default XAMPP password
