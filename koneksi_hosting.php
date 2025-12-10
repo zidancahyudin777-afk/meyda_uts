@@ -1,39 +1,52 @@
 <?php
 // FILE INI KHUSUS UNTUK HOSTING
-// Silakan upload file ini ke folder 'includes' di hosting (via FileZilla)
-// Lalu ganti namanya menjadi 'koneksi.php' di sana.
+// Konfigurasi database untuk AlwaysData
 
+// Informasi koneksi database - SESUAIKAN DENGAN KREDENSIAL ANDA DI ALWAYSDATA
 $host = 'mysql-meyda-project.alwaysdata.net'; 
 $user = 'meyda-project';            
-$pass = 'zidancah27';       
-$db   = 'meyda-project_db'; // Coba 'meyda-project_db' atau 'meyda-project_meyda_db'
+$pass = 'ganti_password_anda_disini';  // PERLU DIGANTI DENGAN PASSWORD YANG BENAR
+$db   = 'meyda-project_db'; 
 
-// Create connection with improved error handling
+echo "<!-- Mencoba koneksi ke: $host sebagai user: $user -->\n"; // Debug info
+
+// Create connection
 $conn = new mysqli();
-if (!$conn->real_connect($host, $user, $pass, $db, null, null, MYSQLI_CLIENT_COMPRESS)) {
-    // Try alternative database names if the primary one fails
+
+// Attempt connection with error reporting
+if (!$conn->real_connect($host, $user, $pass, $db)) {
+    // Jika koneksi gagal, coba database alternatif
     $alt_dbs = ['meyda-project_meyda_db', 'meyda_db'];
     $connected = false;
     
     foreach($alt_dbs as $alt_db) {
+        echo "<!-- Mencoba database alternatif: $alt_db -->\n"; // Debug info
         $conn = new mysqli();
         if ($conn->real_connect($host, $user, $pass, $alt_db)) {
             $db = $alt_db;
             $connected = true;
+            echo "<!-- Berhasil terhubung ke database: $alt_db -->\n"; // Success info
             break;
         }
     }
     
     if (!$connected) {
-        die("Koneksi Hosting Gagal: " . $conn->connect_error . "<br/>Host: " . $host . "<br/>Database: " . $db . "<br/>User: " . $user);
+        // Tampilkan error secara detail
+        $error_msg = $conn->connect_error ? $conn->connect_error : "Gagal terhubung ke database";
+        die("<h3>Kesalahan Koneksi Database:</h3><p><strong>Host:</strong> $host</p><p><strong>User:</strong> $user</p><p><strong>Database:</strong> $db</p><p><strong>Error:</strong> $error_msg</p><p><em>Periksa kembali kredensial database Anda di AlwaysData panel!</em></p>");
+    } else {
+        echo "<!-- Berhasil terhubung ke database alternatif: $db -->\n"; // Success info
     }
+} else {
+    echo "<!-- Koneksi berhasil ke database utama: $db -->\n"; // Success info
 }
 
+// Periksa status koneksi
 if ($conn->connect_error) {
-    die("Koneksi Hosting Gagal: " . $conn->connect_error);
+    die("Koneksi Gagal: " . $conn->connect_error);
 }
 
-// Set charset to prevent issues
+// Set charset untuk mencegah masalah karakter
 $conn->set_charset("utf8mb4");
 
 // Function to sanitize input
