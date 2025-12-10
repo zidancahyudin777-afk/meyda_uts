@@ -5,7 +5,7 @@
 // Informasi koneksi database - SESUAIKAN DENGAN KREDENSIAL ANDA DI ALWAYSDATA
 $host = 'mysql-meyda-project.alwaysdata.net'; 
 $user = 'meyda-project';            
-$pass = 'ganti_password_anda_disini';  // PERLU DIGANTI DENGAN PASSWORD YANG BENAR
+$pass = '';  // GANTI DENGAN PASSWORD DATABASE ANDA DARI PANEL ALWAYSDATA
 $db   = 'meyda-project_db'; 
 
 echo "<!-- Mencoba koneksi ke: $host sebagai user: $user -->\n"; // Debug info
